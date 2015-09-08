@@ -14,7 +14,7 @@ function initNotes() {
 			var note = pair.find(".note");
 			// restore note data from chrome store
 			restore(note, index);
-			// set clicklisteners
+			// set click list list listeners
 			initInteraction(pair, index);
 		}
 		index++;
@@ -45,6 +45,7 @@ $.fn.putText = function(text) {
 	} else {
 		var newText = text.replace(/\r?\n/g, '<br />');
 		$(this).removeClass("neverwritten");
+		// put html into note
 		$(this).html(newText);
 	}
 };
@@ -75,7 +76,7 @@ function initInteraction(td, index) {
 			td.find("textarea").each(function() {$(this).remove()});
 			note.css("display", "block");
 		});
-		return false;
+		return true;
 	});
 }
 
