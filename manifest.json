@@ -23,7 +23,7 @@
     },
 
   "content_scripts":[{       //
-   "matches": ["http://rozklad.kpi.ua/*"],
+   "matches": ["http://rozklad.kpi.ua/Schedules/ViewSchedule.aspx?g=*"],
    "css": ["style.css"],
    "js": ["jq.js", "autoresize.js", "script.js"]
    }]

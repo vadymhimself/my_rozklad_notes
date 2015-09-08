@@ -9,9 +9,12 @@ function initNotes() {
 		var row = Math.floor(index / 7);
 		if (index % 7 != 0 && row % 6 != 0) {
 			var pair = $(this);
+			// put .note element into table cell
 			pair.append("<p class='note neverwritten'></p>");
 			var note = pair.find(".note");
+			// restore note data from chrome store
 			restore(note, index);
+			// set clicklisteners
 			initInteraction(pair, index);
 		}
 		index++;
