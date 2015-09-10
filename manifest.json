@@ -1,14 +1,14 @@
 {
 
   "manifest_version" : 2,
- "name": "My KPI Rozklad Notes", // Название расширения
- "version": "1.0", // Номер версии
- "description": "Extension for writing notes in kpi schedule", // Описание расширения
+ "name": "My KPI Rozklad Notes", 
+ "version": "1.0",
+ "description": "Extension for writing notes in kpi schedule", 
 
  "permissions": [
-  "tabs", // Разрешить расширению работать с вкладками
+  "tabs", 
   "storage",
-  "http://rozklad.kpi.ua/*" // Разрешить расширению обращаться к указанному адресу
+  "http://rozklad.kpi.ua/*" 
   ],
 
   "icons": { 
@@ -17,12 +17,12 @@
     "128":"images/logo128.png" 
     }, 
 
-  "page_action":{      // действие для текущей страницы
+  "page_action":{   
     "default_title": "Load notes",
     "default_icon": "images/logo128.png"
     },
 
-  "content_scripts":[{       //
+  "content_scripts":[{  
    "matches": ["http://rozklad.kpi.ua/Schedules/ViewSchedule.aspx?g=*"],
    "css": ["style.css"],
    "js": ["jq.js", "autoresize.js", "script.js"]
