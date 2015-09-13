@@ -1,4 +1,4 @@
-# my_rozklad_notes
+# My KPI Rozklad Notes
 Chrome extension for putting notes into rozklad.kpi.ua schedule
 
 Extension that turns schedule website into an interactive diary!
