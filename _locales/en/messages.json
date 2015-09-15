@@ -1,0 +1,23 @@
+﻿{
+    "appName": {
+        "message": "My KPI Rozklad Notes"
+    },
+    "appDesc": {
+        "message": "Extension for writing notes in kpi schedule on rozklad.kpi.ua "
+    },
+    "browserActionTitle": {
+        "message": "Open my schedule"
+    },
+    "defTextNote": {
+        "message": "Write your notes here!"
+    },
+    "thanksPageTitle": {
+        "message": "Thank you for using KPI Rozklad Notes!"
+    },
+    "thanksPageHeader": {
+        "message": "Thank you!"
+    },
+    "thanksPageDesc": {
+        "message": "Thank you for using My KPI Rozklad Notes Free Plugin!"
+    }
+}

@@ -1,5 +1,5 @@
 
-var DEFAULT_TEXT = "Write your notes here";
+var DEFAULT_TEXT = chrome.i18n.getMessage("defTextNote");
 var scheduleKey;
 
 function initNotes() {

@@ -1,30 +1,45 @@
 {
+    "manifest_version": 2,
+    "name": "__MSG_appName__",
+    "default_locale": "uk",
+    "version": "1.1",
+    "description": "__MSG_appDesc__",
+    "permissions": [
+        "tabs",
+        "storage",
+        "http://rozklad.kpi.ua/*"
+    ],
 
-  "manifest_version" : 2,
- "name": "My KPI Rozklad Notes", 
- "version": "1.0",
- "description": "Extension for writing notes in kpi schedule", 
-
- "permissions": [
-  "tabs", 
-  "storage",
-  "http://rozklad.kpi.ua/*" 
-  ],
-
-  "icons": { 
-    "16":"images/logo16.png", 
-    "48":"images/logo48.png", 
-    "128":"images/logo128.png" 
-    }, 
-
-  "page_action":{   
-    "default_title": "Load notes",
-    "default_icon": "images/logo128.png"
+    "icons": {
+        "16": "images/logo16.png",
+        "48": "images/logo48.png",
+        "128": "images/logo128.png"
     },
 
-  "content_scripts":[{  
-   "matches": ["http://rozklad.kpi.ua/Schedules/ViewSchedule.aspx?g=*"],
-   "css": ["style.css"],
-   "js": ["jq.js", "autoresize.js", "script.js"]
-   }]
- }
+    "browser_action": {
+        "default_title": "__MSG_browserActionTitle__",
+        "default_icon": "images/logo128.png"
+    },
+
+    "background": {
+        "scripts": [
+            "background.js"
+        ]
+    },
+
+    "content_scripts": [
+        {
+            "matches": [
+                "http://rozklad.kpi.ua/Schedules/ViewSchedule.aspx?g=*"
+            ],
+            "css": [
+                "style.css"
+            ],
+            "js": [
+                "jq.js",
+                "autoresize.js",
+                "script.js"
+            ]
+        }
+    ]
+}
