@@ -2,6 +2,14 @@
 var DEFAULT_TEXT = chrome.i18n.getMessage("defTextNote");
 var scheduleKey;
 
+var nicEditOptions = {
+	fullPanel : false, 
+	iconsPath : chrome.extension.getURL('images/nicEditorIcons.gif'), 
+	buttonList : ['bold','italic','underline', 'strikethrough', 'forecolor', 'link', 'removeformat']
+}
+
+var myNicEditor = new nicEditor(nicEditOptions);
+
 function initNotes() {
 	var index = 0;
 	$("td").each(function() {
@@ -21,61 +29,80 @@ function initNotes() {
 	})
 }
 
-// function for putting carret
-$.fn.selectRange = function(start, end) {
-	if(!end) end = start; 
-	return this.each(function() {
-		if (this.setSelectionRange) {
-			this.focus();
-			this.setSelectionRange(start, end);
-		} else if (this.createTextRange) {
-			var range = this.createTextRange();
-			range.collapse(true);
-			range.moveEnd('character', end);
-			range.moveStart('character', start);
-			range.select();
-		}
-	});
-};
-
 $.fn.putText = function(text) {
-	if (text == undefined || text == DEFAULT_TEXT || text.length < 1) {
+	var html = text;
+	var div = document.createElement("div");
+	div.innerHTML = html;
+	var strippedText = div.textContent || div.innerText || "";
+	if (strippedText.length < 2 || text == undefined || text == DEFAULT_TEXT || text.length < 1) {
 		$(this).text(DEFAULT_TEXT);
 		$(this).addClass("neverwritten");
 	} else {
-		var newText = text.replace(/\r?\n/g, '<br />');
+		// no need to replace breaks now
+		// var newText = text.replace(/\r?\n/g, '<br />');
 		$(this).removeClass("neverwritten");
 		// put html into note
-		$(this).html(newText);
+		$(this).html(text);
 	}
 };
 
 $.fn.getText  = function() {
-	var text = $(this).html().replace(/<br>|<br \/>/g, "\n");
+	var text = $(this).html();
+	//.replace(/<br>|<br \/>/g, "\n");
 	return text;
 }
+
+jQuery.fn.selectText = function(){
+	this.find('input').each(function() {
+		if($(this).prev().length == 0 || !$(this).prev().hasClass('p_copy')) { 
+			$('<p class="p_copy" style="position: absolute; z-index: -1;"></p>').insertBefore($(this));
+		}
+		$(this).prev().html($(this).val());
+	});
+	var doc = document;
+	var element = this[0];
+	if (doc.body.createTextRange) {
+		var range = document.body.createTextRange();
+		range.moveToElementText(element);
+		range.select();
+	} else if (window.getSelection) {
+		var selection = window.getSelection();        
+		var range = document.createRange();
+		range.selectNodeContents(element);
+		selection.removeAllRanges();
+		selection.addRange(range);
+	}
+};
 
 function initInteraction(td, index) {
 	var note = td.find(".note");
 	note.click(function() {
 		note.css("display", "none");
-		td.append("<textarea></textarea>");
-		var textarea = td.find("textarea");
-		textarea.autoResize( {extraSpace: 0});
-		textarea.text(note.getText());
-		textarea.trigger("change.dynSiz");
-		textarea.selectRange(textarea.text().length);
+		td.append("<textarea id='edited'></textarea>");
+		myNicEditor.addInstance('edited');
+		myNicEditor.floatingPanel();
+		myNicEditor.instanceById('edited').setContent(note.getText());
+		var textdiv = $(".nicEdit-main");
+
+		textdiv.selectText();
 
 		// when focus lost
-		textarea.blur(function() {
-			var text = textarea.val();
-			note.putText(text);
+		textdiv.blur(function() {
+			console.log($(".nicEdit-pane").length);
+			if($('.nicEdit-pane').length){
+				// some panes are currently opened - dont close editview
+			} else {
+				var text = myNicEditor.instanceById('edited').getContent();
+				note.putText(text);
 			// save data to local storage
 			store(text, index);
 			// remove all textareas
-			td.find("textarea").each(function() {$(this).remove()});
+			myNicEditor.removeInstance('edited');
+			td.find("textarea").remove();
 			note.css("display", "block");
-		});
+		}
+
+	});
 		return true;
 	});
 }
