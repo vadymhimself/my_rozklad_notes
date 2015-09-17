@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "__MSG_appName__",
     "default_locale": "uk",
-    "version": "1.1",
+    "version": "1.2",
     "description": "__MSG_appDesc__",
     "permissions": [
         "tabs",
@@ -37,9 +37,11 @@
             ],
             "js": [
                 "jq.js",
-                "autoresize.js",
+                "nicEdit.js",
                 "script.js"
             ]
         }
-    ]
+    ],
+
+    "web_accessible_resources": ["images/nicEditorIcons.gif"]
 }
