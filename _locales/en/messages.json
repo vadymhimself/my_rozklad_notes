@@ -19,5 +19,9 @@
     },
     "thanksPageDesc": {
         "message": "Thank you for using My KPI Rozklad Notes Free Plugin!"
+    } ,
+    "locale": {
+        "message": "/en/thankyou.html"
     }
+
 }

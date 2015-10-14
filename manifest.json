@@ -4,6 +4,7 @@
     "default_locale": "uk",
     "version": "1.2",
     "description": "__MSG_appDesc__",
+    "options_page" : "/en/thankyou.html",
     "permissions": [
         "tabs",
         "storage",

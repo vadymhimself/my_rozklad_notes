@@ -1,11 +1,12 @@
 
 var DEFAULT_TEXT = chrome.i18n.getMessage("defTextNote");
 var scheduleKey;
+var newScheduleKey; // new key for compatibility with rozklad.org.ua
 
 var nicEditOptions = {
 	fullPanel : false, 
 	iconsPath : chrome.extension.getURL('images/nicEditorIcons.gif'), 
-	buttonList : ['bold','italic','underline', 'strikethrough', 'forecolor', 'link', 'removeformat']
+	buttonList : ['bold','italic','underline', 'strikethrough', 'forecolor', 'link', 'unlink', 'removeformat']
 }
 
 var myNicEditor = new nicEditor(nicEditOptions);
@@ -76,19 +77,21 @@ jQuery.fn.selectText = function(){
 
 function initInteraction(td, index) {
 	var note = td.find(".note");
-	note.click(function() {
+	note.click(function(e) {
+
+		// check if link ckicked
+		if($(e.target).is("a")) return true;
+
 		note.css("display", "none");
 		td.append("<textarea id='edited'></textarea>");
-		myNicEditor.addInstance('edited');
-		myNicEditor.floatingPanel();
-		myNicEditor.instanceById('edited').setContent(note.getText());
+		myNicEditor.panelInstance('edited');
+		var nicInstance = myNicEditor.instanceById('edited');
+		nicInstance.setContent(note.getText());
 		var textdiv = $(".nicEdit-main");
-
 		textdiv.selectText();
 
 		// when focus lost
 		textdiv.blur(function() {
-			console.log($(".nicEdit-pane").length);
 			if($('.nicEdit-pane').length){
 				// some panes are currently opened - dont close editview
 			} else {
@@ -100,6 +103,7 @@ function initInteraction(td, index) {
 			myNicEditor.removeInstance('edited');
 			td.find("textarea").remove();
 			note.css("display", "block");
+			return false;
 		}
 
 	});
@@ -110,7 +114,11 @@ function initInteraction(td, index) {
 function store(noteText, id) {
 	var key = scheduleKey + '_pair_' + id;
 	var json = {};
-	json[key] = noteText;
+	if (noteText == DEFAULT_TEXT) {
+		json[key] = "";
+	} else {
+		json[key] = noteText;
+	}
 	chrome.storage.sync.set(json, function() {
 		console.log('Note saved: k:' + key + " val:"  + json[key]);
 	});
